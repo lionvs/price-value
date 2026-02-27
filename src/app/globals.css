@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+@theme {
+  --color-pv-blue: #0046BE;
+  --color-pv-blue-dark: #003399;
+  --color-pv-navy: #001E73;
+  --color-pv-yellow: #FFF200;
+  --color-pv-yellow-dark: #E6D900;
+  --color-pv-gray-900: #1D252C;
+  --color-pv-gray-700: #333333;
+  --color-pv-gray-500: #55555A;
+  --color-pv-gray-300: #C5CBE0;
+  --color-pv-gray-100: #F0F0F5;
+  --color-pv-red: #BB0628;
+  --color-pv-green: #008900;
+  --color-pv-white: #FFFFFF;
+
+  --font-family-sans: "Inter", "Helvetica Neue", Arial, sans-serif;
+}
+
+body {
+  background: var(--color-pv-gray-100);
+  color: var(--color-pv-gray-900);
+  font-family: var(--font-family-sans);
+}
+
+/* Utility: line clamp for product names */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

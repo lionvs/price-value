@@ -1,0 +1,66 @@
+[
+  {
+    "slug": "appliances",
+    "name": "Appliances",
+    "description": "Major and small appliances for your home",
+    "image": "/images/categories/appliances.jpg",
+    "subcategories": ["Refrigerators", "Washers & Dryers", "Dishwashers", "Ranges & Ovens", "Microwaves"],
+    "icon": "🏠"
+  },
+  {
+    "slug": "computers-laptops",
+    "name": "Computers & Laptops",
+    "description": "Laptops, desktops, monitors, and accessories",
+    "image": "/images/categories/computers.jpg",
+    "subcategories": ["Laptops", "Desktops", "Monitors", "Computer Accessories"],
+    "icon": "💻"
+  },
+  {
+    "slug": "cell-phones",
+    "name": "Cell Phones",
+    "description": "Smartphones, cases, and mobile accessories",
+    "image": "/images/categories/cell-phones.jpg",
+    "subcategories": ["Smartphones", "Phone Cases", "Screen Protectors", "Chargers & Cables"],
+    "icon": "📱"
+  },
+  {
+    "slug": "tvs-home-theater",
+    "name": "TVs & Home Theater",
+    "description": "TVs, soundbars, streaming devices, and projectors",
+    "image": "/images/categories/tvs.jpg",
+    "subcategories": ["TVs", "Soundbars", "Streaming Devices", "Projectors"],
+    "icon": "📺"
+  },
+  {
+    "slug": "audio",
+    "name": "Audio",
+    "description": "Headphones, speakers, earbuds, and turntables",
+    "image": "/images/categories/audio.jpg",
+    "subcategories": ["Headphones", "Speakers", "Earbuds", "Turntables"],
+    "icon": "🎧"
+  },
+  {
+    "slug": "gaming",
+    "name": "Gaming",
+    "description": "Consoles, PC gaming, accessories, and games",
+    "image": "/images/categories/gaming.jpg",
+    "subcategories": ["Consoles", "PC Gaming", "Gaming Accessories", "Games"],
+    "icon": "🎮"
+  },
+  {
+    "slug": "smart-home",
+    "name": "Smart Home",
+    "description": "Smart speakers, displays, security cameras, and more",
+    "image": "/images/categories/smart-home.jpg",
+    "subcategories": ["Smart Speakers", "Smart Displays", "Security Cameras", "Thermostats", "Smart Lighting"],
+    "icon": "🏡"
+  },
+  {
+    "slug": "cameras-drones",
+    "name": "Cameras & Drones",
+    "description": "DSLR, mirrorless cameras, drones, and accessories",
+    "image": "/images/categories/cameras.jpg",
+    "subcategories": ["DSLR Cameras", "Mirrorless Cameras", "Drones", "Action Cameras", "Camera Accessories"],
+    "icon": "📷"
+  }
+]
