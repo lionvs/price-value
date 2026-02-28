@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
+import { verifyCaptcha } from "@/app/actions";
+import { useReCaptcha } from "@/components/auth/ReCaptchaProvider";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -11,6 +13,7 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const { login, user } = useAuth();
   const router = useRouter();
+  const { executeRecaptcha } = useReCaptcha();
 
   useEffect(() => {
     if (user) {
@@ -22,12 +25,25 @@ export default function LoginPage() {
     return null;
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
     if (!email || !password) {
       setError("Please enter both email and password");
+      return;
+    }
+
+    if (!executeRecaptcha) {
+      setError("Recaptcha not ready");
+      return;
+    }
+
+    const token = await executeRecaptcha("login");
+    const captchaVerification = await verifyCaptcha(token, "login");
+
+    if (!captchaVerification.success) {
+      setError(captchaVerification.message || "Captcha verification failed");
       return;
     }
 
