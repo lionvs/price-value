@@ -4,6 +4,7 @@ import "./globals.css";
 import Providers from "@/context/Providers";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import ReCaptchaProvider from "@/components/auth/ReCaptchaProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -26,13 +27,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Providers>
-          <div className="min-h-screen flex flex-col">
-            <Header />
-            <main className="flex-1">{children}</main>
-            <Footer />
-          </div>
-        </Providers>
+        <ReCaptchaProvider>
+          <Providers>
+            <div className="min-h-screen flex flex-col">
+              <Header />
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </div>
+          </Providers>
+        </ReCaptchaProvider>
       </body>
     </html>
   );

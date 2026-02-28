@@ -8,6 +8,8 @@ import { getUserById } from "@/lib/users";
 import { formatPrice, generateOrderId } from "@/lib/formatters";
 import { Order } from "@/types";
 import Link from "next/link";
+import { verifyCaptcha } from "@/app/actions";
+import { useReCaptcha } from "@/components/auth/ReCaptchaProvider";
 
 export default function CheckoutPage() {
   const { user, isHydrated: authHydrated } = useAuth();
@@ -42,6 +44,7 @@ export default function CheckoutPage() {
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [prefilled, setPrefilled] = useState(false);
+  const { executeRecaptcha } = useReCaptcha();
 
   useEffect(() => {
     if (cartHydrated && items.length === 0 && !orderPlacedRef.current) {
@@ -108,7 +111,23 @@ export default function CheckoutPage() {
     return Object.keys(errs).length === 0;
   };
 
-  const handlePlaceOrder = () => {
+  const handlePlaceOrder = async () => {
+    if (!executeRecaptcha) {
+      setErrors((prev) => ({ ...prev, submit: "Recaptcha not ready" }));
+      return;
+    }
+
+    const token = await executeRecaptcha("checkout");
+    const captchaVerification = await verifyCaptcha(token, "checkout");
+
+    if (!captchaVerification.success) {
+      setErrors((prev) => ({
+        ...prev,
+        submit: captchaVerification.message || "Captcha verification failed",
+      }));
+      return;
+    }
+
     orderPlacedRef.current = true;
     const cardDigits = paymentInfo.cardNumber.replace(/\s/g, "");
     const order: Order = {
@@ -481,6 +500,14 @@ export default function CheckoutPage() {
                   </div>
                 </div>
               </div>
+
+              {errors.submit && (
+                <div className="mt-6 border-t border-pv-gray-300 pt-4">
+                  <p className="text-pv-red text-sm text-center mt-2">
+                    {errors.submit}
+                  </p>
+                </div>
+              )}
 
               <div className="flex gap-3 mt-6">
                 <button
