@@ -23,11 +23,7 @@ export async function verifyCaptcha(token: string, action: string = 'submit') {
       : undefined;
 
   // NOTE: This requires GOOGLE_APPLICATION_CREDENTIALS to be set or ADC to be configured.
-  console.log('Verifying captcha with:', {
-    projectID,
-    recaptchaKey,
-    tokenLength: token?.length,
-    tokenStart: token?.substring(0, 10),
+  console.log('Verifying captcha execution', {
     hasEnvCredentials: !!credentials,
   });
 
