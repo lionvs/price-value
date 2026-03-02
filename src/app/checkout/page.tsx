@@ -8,7 +8,7 @@ import { getUserById } from "@/lib/users";
 import { formatPrice, generateOrderId } from "@/lib/formatters";
 import { Order } from "@/types";
 import Link from "next/link";
-import { verifyCaptcha } from "@/app/actions";
+import { verifyCaptcha, TransactionData } from "@/app/actions";
 import { useReCaptcha } from "@/components/auth/ReCaptchaProvider";
 
 export default function CheckoutPage() {
@@ -118,7 +118,34 @@ export default function CheckoutPage() {
     }
 
     const token = await executeRecaptcha("checkout");
-    const captchaVerification = await verifyCaptcha(token, "checkout");
+    
+    const cardDigits = paymentInfo.cardNumber.replace(/\s/g, "");
+    const cardBin = cardDigits.slice(0, 6); // First 6 digits
+    const cardLastFour = cardDigits.slice(-4);
+    
+    // Prepare transaction data for reCAPTCHA Fraud Prevention
+    const transactionData = {
+      transactionId: `txn-${Date.now()}`,
+      paymentMethod: "credit-card",
+      cardBin,
+      cardLastFour,
+      currencyCode: "USD",
+      value: total,
+      user: {
+        email: shippingInfo.email,
+        phoneNumber: shippingInfo.phone,
+      },
+      billingAddress: {
+        recipient: `${shippingInfo.firstName} ${shippingInfo.lastName}`,
+        address: [shippingInfo.street],
+        locality: shippingInfo.city,
+        administrativeArea: shippingInfo.state,
+        regionCode: "USA",
+        postalCode: shippingInfo.zipCode,
+      },
+    };
+    
+    const captchaVerification = await verifyCaptcha(token, "checkout", transactionData);
 
     if (!captchaVerification.success) {
       setErrors((prev) => ({
@@ -128,8 +155,12 @@ export default function CheckoutPage() {
       return;
     }
 
+    // Log fraud prevention assessment if available
+    if (captchaVerification.fraudPrevention) {
+      console.log("Fraud Prevention Assessment:", captchaVerification.fraudPrevention);
+    }
+
     orderPlacedRef.current = true;
-    const cardDigits = paymentInfo.cardNumber.replace(/\s/g, "");
     const order: Order = {
       orderId: generateOrderId(),
       items: [...items],
@@ -144,7 +175,7 @@ export default function CheckoutPage() {
         zipCode: shippingInfo.zipCode,
         country: "US",
       },
-      paymentLast4: cardDigits.slice(-4),
+      paymentLast4: cardLastFour,
       placedAt: new Date().toISOString(),
     };
     localStorage.setItem("pv-last-order", JSON.stringify(order));
