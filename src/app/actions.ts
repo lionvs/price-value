@@ -63,6 +63,7 @@ export async function verifyCaptcha(
 
   // Add transaction_data if provided (required for Fraud Prevention)
   if (transactionData) {
+
     eventData.transactionData = transactionData;
   }
 
