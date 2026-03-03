@@ -11,26 +11,26 @@ export default function HomePage() {
   return (
     <div>
       {/* Hero Banner */}
-      <section className="bg-gradient-to-r from-pv-blue to-pv-navy text-white">
-        <div className="max-w-7xl mx-auto px-4 py-16 md:py-24">
+      <section className="bg-white border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 py-14 md:py-20">
           <div className="max-w-2xl">
-            <h1 className="text-3xl md:text-5xl font-black mb-4">
-              Tech for <span className="text-pv-yellow">Everyone</span>
+            <h1 className="text-3xl md:text-5xl font-black text-pv-gray-900 mb-4 leading-tight">
+              Tech for <span className="text-pv-blue">Everyone</span>
             </h1>
-            <p className="text-lg md:text-xl text-blue-200 mb-8">
+            <p className="text-lg md:text-xl text-pv-gray-500 mb-8">
               Shop the latest electronics, computers, phones, and more. Great
               deals every day at Price Value.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link
                 href="/category/computers-laptops"
-                className="bg-pv-yellow text-pv-gray-900 font-bold px-6 py-3 rounded-md hover:bg-pv-yellow-dark transition-colors"
+                className="bg-pv-blue text-white font-semibold px-6 py-3 rounded-full hover:bg-pv-blue-dark transition-colors shadow-sm"
               >
                 Shop Computers
               </Link>
               <Link
                 href="/category/cell-phones"
-                className="bg-white/10 text-white font-bold px-6 py-3 rounded-md border border-white/30 hover:bg-white/20 transition-colors"
+                className="bg-white text-pv-blue font-semibold px-6 py-3 rounded-full border border-pv-blue hover:bg-blue-50 transition-colors"
               >
                 Shop Phones
               </Link>
@@ -49,7 +49,7 @@ export default function HomePage() {
             <Link
               key={cat.slug}
               href={`/category/${cat.slug}`}
-              className="bg-white rounded-lg border border-gray-200 p-6 text-center hover:shadow-lg hover:border-pv-blue transition-all group"
+              className="bg-white rounded-xl border border-gray-200 p-6 text-center hover:shadow-md hover:border-pv-blue transition-all group"
             >
               <div className="text-4xl mb-3">{cat.icon}</div>
               <h3 className="font-semibold text-sm text-pv-gray-900 group-hover:text-pv-blue">
@@ -107,16 +107,16 @@ export default function HomePage() {
 
       {/* Promo Banner */}
       <section className="max-w-7xl mx-auto px-4 py-10">
-        <div className="bg-pv-navy rounded-lg p-8 md:p-12 text-white text-center">
-          <h2 className="text-2xl md:text-3xl font-bold mb-3">
+        <div className="bg-blue-50 border border-blue-100 rounded-2xl p-8 md:p-12 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-pv-gray-900 mb-3">
             Free Shipping on Orders Over $35
           </h2>
-          <p className="text-blue-200 mb-6">
+          <p className="text-pv-gray-500 mb-6">
             Plus, easy returns and price match guarantee on all items
           </p>
           <Link
             href="/category/tvs-home-theater"
-            className="inline-block bg-pv-yellow text-pv-gray-900 font-bold px-8 py-3 rounded-md hover:bg-pv-yellow-dark transition-colors"
+            className="inline-block bg-pv-blue text-white font-semibold px-8 py-3 rounded-full hover:bg-pv-blue-dark transition-colors shadow-sm"
           >
             Shop TVs & Home Theater
           </Link>

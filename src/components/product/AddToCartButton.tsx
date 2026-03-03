@@ -48,10 +48,10 @@ export default function AddToCartButton({
     return (
       <button
         onClick={handleAdd}
-        className={`w-full font-bold py-2 px-4 rounded-md text-sm transition-colors ${
+        className={`w-full font-bold py-2 px-4 rounded-full text-sm transition-colors ${
           inCart
             ? "bg-pv-green text-white"
-            : "bg-pv-yellow text-pv-gray-900 hover:bg-pv-yellow-dark"
+            : "bg-pv-blue text-white hover:bg-pv-blue-dark"
         }`}
       >
         {inCart ? "Added!" : "Add to Cart"}
@@ -82,10 +82,10 @@ export default function AddToCartButton({
       </div>
       <button
         onClick={handleAdd}
-        className={`flex-1 font-bold py-3 px-6 rounded-md text-sm transition-colors ${
+        className={`flex-1 font-bold py-3 px-6 rounded-full text-sm transition-colors ${
           inCart
             ? "bg-pv-green text-white"
-            : "bg-pv-yellow text-pv-gray-900 hover:bg-pv-yellow-dark"
+            : "bg-pv-blue text-white hover:bg-pv-blue-dark"
         }`}
       >
         {inCart ? "Added to Cart!" : "Add to Cart"}
