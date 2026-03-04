@@ -24,10 +24,18 @@ export interface TransactionData {
   };
 }
 
+export interface UserInfo {
+  accountId?: string;
+  email?: string;
+  phoneNumber?: string;
+  username?: string;
+}
+
 export async function verifyCaptcha(
   token: string,
   action: string = 'submit',
   transactionData?: TransactionData,
+  userInfo?: UserInfo,
 ) {
   const projectID = process.env.RECAPTCHA_PROJECT_ID;
   const recaptchaKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
@@ -63,8 +71,19 @@ export async function verifyCaptcha(
 
   // Add transaction_data if provided (required for Fraud Prevention)
   if (transactionData) {
-
     eventData.transactionData = transactionData;
+  }
+
+  // Add userInfo for Account Defender (account protection)
+  if (userInfo?.accountId || userInfo?.email || userInfo?.phoneNumber || userInfo?.username) {
+    const userIds: any[] = [];
+    if (userInfo.email) userIds.push({email: userInfo.email});
+    if (userInfo.phoneNumber) userIds.push({phoneNumber: userInfo.phoneNumber});
+    if (userInfo.username) userIds.push({username: userInfo.username});
+    eventData.userInfo = {
+      ...(userInfo.accountId && {accountId: userInfo.accountId}),
+      ...(userIds.length > 0 && {userIds}),
+    };
   }
 
   const request = {
@@ -86,6 +105,7 @@ export async function verifyCaptcha(
       riskScore: response.riskAnalysis?.score,
       riskReasons: response.riskAnalysis?.reasons,
       fraudPreventionTransactionRisk: response.fraudPreventionAssessment?.transactionRisk,
+      accountDefenderLabels: response.accountDefenderAssessment?.labels,
       hasTransactionData: !!request.assessment.event.transaction_data,
     });
 
@@ -108,6 +128,9 @@ export async function verifyCaptcha(
           ? {
               transactionRisk: response.fraudPreventionAssessment?.transactionRisk,
             }
+          : undefined,
+        accountDefender: response.accountDefenderAssessment?.labels?.length
+          ? {labels: response.accountDefenderAssessment.labels}
           : undefined,
       };
     } else {
