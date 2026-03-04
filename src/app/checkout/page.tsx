@@ -189,7 +189,7 @@ export default function CheckoutPage() {
 
       {/* Guest checkout notice */}
       {!user && (
-        <div className="p-3 bg-blue-50 border border-blue-200 rounded-md text-sm text-pv-gray-700 mb-6 flex items-center justify-between">
+        <div className="p-3 bg-green-50 border border-green-200 rounded-md text-sm text-pv-gray-700 mb-6 flex items-center justify-between">
           <span>Checking out as a guest.</span>
           <Link href="/login" className="text-pv-blue font-medium hover:underline">
             Sign in for faster checkout
@@ -368,7 +368,7 @@ export default function CheckoutPage() {
           {step === "payment" && (
             <div className="bg-white rounded-lg border border-gray-200 p-6">
               <h2 className="font-bold text-lg mb-4">Payment Information</h2>
-              <div className="p-3 bg-blue-50 border border-blue-200 rounded-md text-sm text-pv-blue mb-4">
+              <div className="p-3 bg-green-50 border border-green-200 rounded-md text-sm text-pv-blue mb-4">
                 All major credit and debit cards accepted. Your payment information is encrypted and secure.
               </div>
               <div className="space-y-4">

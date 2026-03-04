@@ -213,7 +213,7 @@ export default function ConfirmationPage() {
         </Link>
         <Link
           href="/account"
-          className="inline-block border border-pv-blue text-pv-blue font-bold px-8 py-3 rounded-md hover:bg-blue-50 transition-colors text-center"
+          className="inline-block border border-pv-blue text-pv-blue font-bold px-8 py-3 rounded-md hover:bg-green-50 transition-colors text-center"
         >
           View Account
         </Link>
