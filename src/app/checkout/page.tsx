@@ -145,7 +145,11 @@ export default function CheckoutPage() {
       },
     };
     
-    const captchaVerification = await verifyCaptcha(token, "checkout", transactionData);
+    const captchaVerification = await verifyCaptcha(token, "checkout", transactionData, {
+      accountId: user?.userId,
+      email: shippingInfo.email,
+      phoneNumber: shippingInfo.phone || undefined,
+    });
 
     if (!captchaVerification.success) {
       setErrors((prev) => ({
