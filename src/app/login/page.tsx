@@ -40,7 +40,7 @@ export default function LoginPage() {
     }
 
     const token = await executeRecaptcha("login");
-    const captchaVerification = await verifyCaptcha(token, "login", undefined, {email});
+    const captchaVerification = await verifyCaptcha(token, "login", undefined, {email}, process.env.NEXT_PUBLIC_RECAPTCHA_LOGIN_SITE_KEY);
 
     if (!captchaVerification.success) {
       setError(captchaVerification.message || "Captcha verification failed");
