@@ -20,6 +20,7 @@ export const useReCaptcha = () => useContext(ReCaptchaContext);
 
 interface ReCaptchaProviderProps {
   children: ReactNode;
+  siteKey?: string;
 }
 
 declare global {
@@ -28,9 +29,9 @@ declare global {
   }
 }
 
-export default function ReCaptchaProvider({children}: ReCaptchaProviderProps) {
+export default function ReCaptchaProvider({children, siteKey: siteKeyProp}: ReCaptchaProviderProps) {
   const [isReady, setIsReady] = useState(false);
-  const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+  const siteKey = siteKeyProp ?? process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 
   const checkReady = useCallback(() => {
     if (window.grecaptcha?.enterprise) {

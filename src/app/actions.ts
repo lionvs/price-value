@@ -36,9 +36,10 @@ export async function verifyCaptcha(
   action: string = 'submit',
   transactionData?: TransactionData,
   userInfo?: UserInfo,
+  siteKey?: string,
 ) {
   const projectID = process.env.RECAPTCHA_PROJECT_ID;
-  const recaptchaKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+  const recaptchaKey = siteKey ?? process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 
   if (!projectID || !recaptchaKey) {
     console.warn(
