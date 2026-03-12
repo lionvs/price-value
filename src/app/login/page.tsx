@@ -11,7 +11,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const { login, user } = useAuth();
+  const { login, user, isHydrated } = useAuth();
   const router = useRouter();
   const { executeRecaptcha } = useReCaptcha();
 
@@ -21,7 +21,7 @@ export default function LoginPage() {
     }
   }, [user, router]);
 
-  if (user) {
+  if (!isHydrated || user) {
     return null;
   }
 
