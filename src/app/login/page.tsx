@@ -53,6 +53,7 @@ export default function LoginPage() {
       router.push("/account");
     } else {
       setError(result.error || "Login failed");
+    }
       
     } catch (err: any) {
       // Replicate the exact timeout failure mode
