@@ -39,19 +39,45 @@ export default function LoginPage() {
       return;
     }
 
-    const token = await executeRecaptcha("login");
-    const captchaVerification = await verifyCaptcha(token, "login", undefined, {email}, process.env.NEXT_PUBLIC_RECAPTCHA_LOGIN_SITE_KEY);
+    try {
+      // Create a promise that strictly rejects after 5 seconds
+      const timeoutPromise = new Promise<string>((_, reject) => {
+        setTimeout(() => reject(new Error("token_request_timeout")), 5000);
+      });
 
-    if (!captchaVerification.success) {
-      setError(captchaVerification.message || "Captcha verification failed");
-      return;
-    }
+      // Race the recaptcha execution against the 5-second timeout
+      const token = await Promise.race([
+        executeRecaptcha("login"),
+        timeoutPromise
+      ]);
 
-    const result = login(email, password);
-    if (result.success) {
-      router.push("/account");
-    } else {
-      setError(result.error || "Login failed");
+      const captchaVerification = await verifyCaptcha(
+        token, 
+        "login", 
+        undefined, 
+        {email}, 
+        process.env.NEXT_PUBLIC_RECAPTCHA_LOGIN_SITE_KEY
+      );
+
+      if (!captchaVerification.success) {
+        setError(captchaVerification.message || "Captcha verification failed");
+        return;
+      }
+
+      const result = login(email, password);
+      if (result.success) {
+        router.push("/account");
+      } else {
+        setError(result.error || "Login failed");
+      }
+      
+    } catch (err: any) {
+      // Replicate the exact timeout failure mode
+      if (err.message === "token_request_timeout") {
+        setError("Token request timed out. (Took longer than 5 seconds)");
+      } else {
+        setError(err.message || "An unexpected error occurred.");
+      }
     }
   };
 
