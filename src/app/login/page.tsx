@@ -40,36 +40,19 @@ export default function LoginPage() {
     }
 
     try {
-      // Create a promise that strictly rejects after 5 seconds
-      const timeoutPromise = new Promise<string>((_, reject) => {
-        setTimeout(() => reject(new Error("token_request_timeout")), 5000);
-      });
+       const token = await executeRecaptcha("login");
+    const captchaVerification = await verifyCaptcha(token, "login", undefined, {email}, process.env.NEXT_PUBLIC_RECAPTCHA_LOGIN_SITE_KEY);
 
-      // Race the recaptcha execution against the 5-second timeout
-      const token = await Promise.race([
-        executeRecaptcha("login"),
-        timeoutPromise
-      ]);
+    if (!captchaVerification.success) {
+      setError(captchaVerification.message || "Captcha verification failed");
+      return;
+    }
 
-      const captchaVerification = await verifyCaptcha(
-        token, 
-        "login", 
-        undefined, 
-        {email}, 
-        process.env.NEXT_PUBLIC_RECAPTCHA_LOGIN_SITE_KEY
-      );
-
-      if (!captchaVerification.success) {
-        setError(captchaVerification.message || "Captcha verification failed");
-        return;
-      }
-
-      const result = login(email, password);
-      if (result.success) {
-        router.push("/account");
-      } else {
-        setError(result.error || "Login failed");
-      }
+    const result = login(email, password);
+    if (result.success) {
+      router.push("/account");
+    } else {
+      setError(result.error || "Login failed");
       
     } catch (err: any) {
       // Replicate the exact timeout failure mode
