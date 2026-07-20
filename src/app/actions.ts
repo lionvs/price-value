@@ -68,6 +68,7 @@ export async function verifyCaptcha(
   const eventData: any = {
     token: token,
     siteKey: recaptchaKey,
+    expectedAction: action,
   };
 
   // Add transaction_data if provided (required for Fraud Prevention)
