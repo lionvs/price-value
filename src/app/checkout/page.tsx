@@ -187,6 +187,62 @@ export default function CheckoutPage() {
     router.push("/checkout/confirmation");
   };
 
+    const handleCoolStuff = async () => {
+    if (!executeRecaptcha) {
+      setErrors((prev) => ({ ...prev, submit: "Recaptcha not ready" }));
+      return;
+    }
+
+    const token = await executeRecaptcha("coolStuff");
+    
+    const cardDigits = paymentInfo.cardNumber.replace(/\s/g, "");
+    const cardBin = cardDigits.slice(0, 6); // First 6 digits
+    const cardLastFour = cardDigits.slice(-4);
+    
+    // Prepare transaction data for reCAPTCHA Fraud Prevention
+    const transactionData = {
+      transactionId: `txn-${Date.now()}`,
+      paymentMethod: "credit-card",
+      cardBin,
+      cardLastFour,
+      currencyCode: "USD",
+      value: total,
+      user: {
+        email: shippingInfo.email,
+        phoneNumber: shippingInfo.phone,
+      },
+      billingAddress: {
+        recipient: `${shippingInfo.firstName} ${shippingInfo.lastName}`,
+        address: [shippingInfo.street],
+        locality: shippingInfo.city,
+        administrativeArea: shippingInfo.state,
+        regionCode: "USA",
+        postalCode: shippingInfo.zipCode,
+      },
+    };
+    
+    const captchaVerification = await verifyCaptcha(token, "coolButton", transactionData, {
+      accountId: user?.userId,
+      email: shippingInfo.email,
+      phoneNumber: shippingInfo.phone || undefined,
+    });
+
+    if (!captchaVerification.success) {
+      setErrors((prev) => ({
+        ...prev,
+        submit: captchaVerification.message || "Captcha verification failed",
+      }));
+      return;
+    }
+
+    // Log fraud prevention assessment if available
+    if (captchaVerification.fraudPrevention) {
+      console.log("Fraud Prevention Assessment:", captchaVerification.fraudPrevention);
+    }
+
+  
+  };
+
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold text-pv-gray-900 mb-6">Checkout</h1>
@@ -550,6 +606,12 @@ export default function CheckoutPage() {
                   className="px-6 py-3 border border-pv-gray-300 rounded-md text-sm font-medium hover:bg-pv-gray-100 transition-colors"
                 >
                   Back
+                </button>
+                <button
+                  onClick={handleCoolStuff}
+                  className="flex-1 bg-pv-yellow text-pv-gray-900 font-bold py-3 rounded-md hover:bg-pv-yellow-dark transition-colors"
+                >
+                  Cool Stuff
                 </button>
                 <button
                   onClick={handlePlaceOrder}
